@@ -1,0 +1,31 @@
+html {
+    height: 100%;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: 10px;
+    font-family: sans-serif;
+}
+
+body{
+    margin: 0;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(rgb(117, 237, 241),rgb(119, 119, 235));
+}
+
+main {
+    width: 100%;
+    max-width: 40rem;
+    background-color: aliceblue;
+    border-radius: 10px;
+    min-height: 6rem;
+    padding:  3.2rem 2.4rem;
+}
+
+h1 {
+    font-size: 2.3rem;
+    margin: 0 0 1.2rem;
+}
