@@ -52,11 +52,12 @@ h1 {
     }
     & > ul > li> button {
         background-color: rgb(236, 124, 124);
-        padding: 2rem;
+        padding: 1.3rem;
         border:  none;
         border-radius: 10px;
         color: aliceblue;
         cursor: pointer;
+        transition: 0.3s ;
         &:hover {
             background-color: brown;
         }
@@ -79,11 +80,12 @@ h1 {
 #create-todo-form {
     display: flex;
     flex-direction: row;
+    height: 4em;
 }
 
 .input-description {
     width: 100%;
-    height: 3rem;
+    height: 100%;
     font-size: 1.7rem;
     margin-right: 1rem;
     border: solid 1px #646464;
@@ -95,7 +97,8 @@ h1 {
 }
 
 .add-task-btn{
-    width: 3.5rem;
+    width: 4rem;
+    height: 100%;
     border-radius: 10px;
     border: none;
     background-color: rgb(105, 201, 156);
@@ -104,6 +107,28 @@ h1 {
     transition: 0.3s ;
 
     &:hover{
-        background-color: aquamarine;
+        opacity: .5;;
+    }
+}
+
+
+footer {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+}
+.remove-done-tasks-btn {
+    padding: 1em;
+    cursor: pointer;
+    border: none;
+    border-radius: 10px;
+    background-color: cadetblue;
+    color: aliceblue;
+    transition: 0.3s;
+
+    &:hover {
+        opacity: .8;
+        padding: 0.8em;
     }
 }
