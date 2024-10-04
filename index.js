@@ -1,14 +1,3 @@
-
-
-
-
-
-
-
-
-
-
-
 //retirar do localstorage e volta a ser objeto 
 const getTasksFromLocalStorage = () => {
     const localTasks = JSON.parse(window.localStorage.getItem('tasks')) //nome do banco que colocamos a lista
@@ -26,10 +15,14 @@ const removeTask = (taskId) => {
     const tasks = getTasksFromLocalStorage()
     const updatedTasks = tasks.filter(({ id }) => parseInt(id) !== parseInt(taskId));
     setTasksFromLocalStorage(updatedTasks);
+    
 
     document
         .getElementById("todo-list")
         .removeChild(document.getElementById(taskId)); 
+
+    barraProgresso()
+    barraCheck()
 }
 
 //ao clicar no botão, remove do array os que estão checados e remove da tela tmb
@@ -47,6 +40,8 @@ const removeDoneTasks = () => {
         .getElementById("todo-list")
         .removeChild(document.getElementById(tasksToRemove)) 
     })
+    barraProgresso()
+    barraCheck()
 }
 
 //2-retorna as <li>. Coloca todas na <ul>
@@ -84,6 +79,9 @@ const onCheckboxClick = (event) => {
             : task
     })
     setTasksFromLocalStorage(updatedTasks)
+
+    barraProgresso()
+    barraCheck()
 }
 
 //1-Retornar as <div> label e input dentro da div. cria quantas quiser.Todos input do tipo checkbox.
@@ -116,6 +114,23 @@ const criarIdcadaTarefa = () => {
 }
 
 
+//BARRA DE PROGRESSOS
+const barraCheck = () => {
+    tasks= getTasksFromLocalStorage()
+
+    const updatedTasks = tasks.filter((task)=> task.checked)
+    updatedTasks? barraProgresso(updatedTasks.length): barraProgresso(0)
+
+}
+const barraProgresso = (barraCheck) => {
+    tasks = getTasksFromLocalStorage()
+    const containerTarefa = document.getElementById('progresso')
+    containerTarefa.textContent = `${barraCheck} / ${tasks.length}`
+}
+
+
+
+
 //Retorna Nome da Tarefa + ID
 const getNewTask = (event) => {
     const description = event.target.elements.description.value;   //descrição do input tipo texto
@@ -124,10 +139,18 @@ const getNewTask = (event) => {
     return { description, id }
 }
 
+const getCreatedTaskInfo = (event) => new Promise((resolve) => {
+    document.getElementById('botão-adicionar').setAttribute('disabled', true)  //serve so pra mudar o botão
+    setTimeout(()=> {
+        resolve(getNewTask(event));
+    }, 1500)
+})
+
 //Retorna nova lista de objeto com: Nome tarefa + Id
-const createTask = (event) => {
+const createTask = async (event) => {
     event.preventDefault();            //previne que mude a url ao acionar o botão submit
-    const newTaskData = getNewTask(event)  //constante guarda id e descrição que usuario digitou
+    
+    const newTaskData = await getCreatedTaskInfo(event);  //constante guarda id e descrição que usuario digitou
     
     const checkbox = getCheckboxInput(newTaskData) //<div>input+label<div> criada pelo usuario
     createTaskListItem(newTaskData, checkbox);     //retorna constante que guarda id e descrição
@@ -138,13 +161,17 @@ const createTask = (event) => {
         { id: newTaskData.id, description: newTaskData.description, checked: false }
     ]
     setTasksFromLocalStorage(updatedTasks)
+    document.getElementById('botão-adicionar').removeAttribute('disabled')
+    barraProgresso()
+    barraCheck()
 }
 
 //ao carregar a pagina, mostra na tela as listas ja criada e Botão submit aciona todas as funções.
 window.onload = function () {
     const form = document.getElementById('create-todo-form')   //<form> do html, o botão criado faz submit nele
     form.addEventListener('submit', createTask)                //boão adicionar tarefa aciona varias funções
-    
+    barraProgresso()
+    barraCheck()
     const tasks = getTasksFromLocalStorage();
 
     //para cada array, crie uma nova lista começando do indice 0
@@ -152,4 +179,6 @@ window.onload = function () {
         const checkbox = getCheckboxInput(task);        //a criação da div, recebe as 3 chaves de cada objeto
         createTaskListItem(task, checkbox);             //acionamos 
     })
+
+    
 }
